@@ -15,14 +15,15 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class ExampleSubsystem extends SubsystemBase {
 
   private Compressor pcmCompressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
-  private Solenoid exampleSolenoidPCM = new Solenoid(PneumaticsModuleType.CTREPCM, 3);
+//  private Solenoid exampleSolenoidPCM = new Solenoid(PneumaticsModuleType.CTREPCM, 2);
 
-  DoubleSolenoid exampleDoublePCM = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 0, 1);
+  DoubleSolenoid exampleDoublePCM = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 1, 0);
   /** Creates a new ExampleSubsystem. */
   public ExampleSubsystem() {
     pcmCompressor.enableDigital();
+   
+    pcmCompressor.disable();
     exampleDoublePCM.set(Value.kOff);
-   // pcmCompressor.disable
    // pcmCompressor.close();
   }
 
@@ -38,10 +39,26 @@ public class ExampleSubsystem extends SubsystemBase {
         () -> {
           /* one-time action goes here */
           pcmCompressor.enableDigital();
+          
           exampleDoublePCM.set(Value.kForward);
-          exampleSolenoidPCM.set(true);
-          pcmCompressor.disable();
-          pcmCompressor.close();
+       //   pcmCompressor.disable();
+       //   exampleDoublePCM.set(Value.kOff);
+       //   pcmCompressor.close();
+        });
+  }
+
+  public CommandBase reverse() {
+    // Inline construction of command goes here.
+    // Subsystem::RunOnce implicitly requires `this` subsystem.
+    return runOnce(
+        () -> {
+          /* one-time action goes here */
+          pcmCompressor.enableDigital();
+          
+          exampleDoublePCM.set(Value.kReverse);
+       //   pcmCompressor.disable();
+       //   exampleDoublePCM.set(Value.kOff);
+       //   pcmCompressor.close();
         });
   }
 
